@@ -7,15 +7,15 @@ This repository houses the code used to analyze non-falciparum malaria serology 
 Code files:
 
 Data cleaning and logistic regression: 
-  	NAIIS_data_cleaning.sas
- 	 Analysis_Nigeria_children_sero.R
-   Analysis_Nigeria_children_PCR.R 
+  	NAIIS_data_cleaning.sas,
+ 	 Analysis_Nigeria_children_sero.R,
+   Analysis_Nigeria_children_PCR.R,
    Analysis_Nigeria_children_alldata.R
 
 Empirical bayes smoothed maps:
 EB_smoothing.R
 
 Seroconversion models:
-Scr_model_functions.R
-Scr_models.R
+Scr_model_functions.R,
+Scr_models.R,
 Scr_models_by_State.R
