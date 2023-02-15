@@ -533,16 +533,6 @@ gof(model3)
 performance::check_collinearity(model3)
 performance::binned_residuals(model3) 
 
-#Final Pf seropositivity model
-model4 <- glmer(PfMSP1pos ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + netcover_avg + netcover_ind +
-                  Urban + (1 | varunit/ A1QNUMBER),
-                data= NG_Ab_data, family= "binomial",
-                control=glmerControl(optimizer="bobyqa"))
-parameters(model4, exponentiate = TRUE, details = TRUE)
-model_performance(model4, metrics= "common") 
-gof(model4)
-performance::check_collinearity(model4)
-
 
 
 #### SUPPLEMENTARY MATERIALS ####
