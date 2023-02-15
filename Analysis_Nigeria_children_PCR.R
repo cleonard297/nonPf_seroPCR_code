@@ -4,7 +4,7 @@
 # author: Colleen Leonard
 # date: January 25, 2022
 
-
+ 
 #Load required packages
 library(haven)
 library(plyr) 
@@ -370,6 +370,7 @@ performance_hosmer(model_pf3.0)
 
 #### 4.0 FINAL MODELS- Table 2- Any Pm (or Po) Infection vs. Negative (by all 4 antigens) ####
 #Read in cleaned Antigen dataset (NG_antigen_data)
+NG_antigen_data <- read_xlsx("Nigeria_children_Antigen_abbrev.xlsx")
 
 #Create a temporary dataset which only includes Pm (mixed or mono) and Antigen negative samples
 #PCR abbreviated data set
@@ -378,7 +379,7 @@ NG_PCR_abrv <- NG_PCR_data %>%
 
 #Check if all PCR obs (1204) are found within the full antigen dataset= Yes
 check <- do.call(paste0, NG_PCR_abrv[,1]) %in% do.call(paste0, NG_antigen_data[,1]) 
-check[1000:1204]
+check[1:1204]
 
 #Merge all Antigen with PCR data
 NG_PCRant_dat <- NG_antigen_data %>% 
@@ -397,8 +398,40 @@ Pm_PCRant_dat <- rbind(Neg_4ant, PCR_pm_dat) %>%
 
 Pm_PCRant_dat <- mutate_at(Pm_PCRant_dat, c("PCR_pm"), ~replace(., is.na(.), 0))   #NAs are negative by PCR
 
-write_xlsx(Pm_PCRant_dat, "Nigeria_Pm_PCR_ant_dat.xlsx")
+write_xlsx(Pm_PCRant_dat, "Nigeria_Pm_PCR_ant_dat.xlsx") #Save file
 
+#Unadjusted models for outcome= P. malariae infection
+model_pm_unadj <- brglm(PCR_pm ~  Gender,
+                      data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj)
+
+model_pm_unadj2 <- brglm(PCR_pm ~ factor(AGEGRP),
+                        data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj2, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj2)
+
+model_pm_unadj3 <- brglm(PCR_pm ~ factor(Wealthquintile),
+                         data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj3, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj3)
+
+model_pm_unadj4 <- brglm(PCR_pm ~ Urban,
+                         data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj4, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj4)
+
+model_pm_unadj5 <- brglm(PCR_pm ~ netcover_ind,
+                         data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj5, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj5)
+
+model_pm_unadj6 <- brglm(PCR_pm ~ netcover_avg,
+                         data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_pm_unadj6, exponentiate = TRUE, details = TRUE)
+gof(model_pm_unadj6)
+
+#Final, Adjusted model for outcome= P. malariae infection
 model_pm4.0 <- brglm(PCR_pm ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + Urban + netcover_ind +
                        netcover_avg, data= Pm_PCRant_dat, family= "binomial", method= "brglm.fit")
 
@@ -407,7 +440,6 @@ performance::binned_residuals(model_pm4.0)
 model_performance(model_pm4.0, metrics= "common")
 gof(model_pm4.0)
 performance_hosmer(model_pm4.0) #model seems to fit well
-
 
 #Filter for Po PCR positive
 PCR_po_dat <- NG_PCRant_dat %>% 
@@ -419,11 +451,45 @@ Po_PCRant_dat <- rbind(Neg_4ant, PCR_po_dat) %>%
 
 Po_PCRant_dat <- mutate_at(Po_PCRant_dat, c("PCR_po"), ~replace(., is.na(.), 0))   #NAs are negative by PCR
 
-write_xlsx(Po_PCRant_dat, "Nigeria_PO_PCR_ant_dat.xlsx")
+write_xlsx(Po_PCRant_dat, "Nigeria_PO_PCR_ant_dat.xlsx") #save file
+
+#Unadjusted models for outcome= P. malariae infection
+model_po_unadj <- brglm(PCR_po ~  Gender,
+                        data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+
+parameters::parameters(model_po_unadj, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj)
+
+model_po_unadj2 <- brglm(PCR_po ~  factor(AGEGRP),
+                        data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+
+parameters::parameters(model_oo_unadj2, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj2)
 
 Po_PCRant_dat %>% 
   tabyl(Wealthquintile, PCR_po)
 
+model_po_unadj3 <- brglm(PCR_po ~ factor(Wealthquintile),
+                         data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_po_unadj3, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj3)
+
+model_po_unadj4 <- brglm(PCR_po ~ Urban,
+                         data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_po_unadj4, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj4)
+
+model_po_unadj5 <- brglm(PCR_po ~ netcover_ind,
+                         data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_po_unadj5, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj5)
+
+model_po_unadj6 <- brglm(PCR_po ~ netcover_avg,
+                         data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
+parameters::parameters(model_po_unadj6, exponentiate = TRUE, details = TRUE)
+gof(model_po_unadj6)
+
+#Final, Adjusted models for outcome= P. ovale infection
 model_po4.0 <- brglm(PCR_po ~ Gender + factor(AGEGRP) + factor(Wealthquintile) + Urban + netcover_ind +
                        netcover_avg, data= Po_PCRant_dat, family= "binomial", method= "brglm.fit")
 
