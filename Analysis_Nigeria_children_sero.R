@@ -390,7 +390,44 @@ gof(model1b)
 performance::binned_residuals(model1b) #poor fit
 #drop Household number Random intercept- only ~2 children per HH on average 
 
-#Final Pm seropositivity model
+#Unadjusted models for outcome= P. malariae MSP1 seropositivity
+model1u <- glmer(PmMSP1pos ~  Gender + (1 | varunit),
+                data= NG_Ab_data, family= "binomial",
+                control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model1u, exponentiate = TRUE, details = TRUE)
+gof(model1u)
+
+model2u <- glmer(PmMSP1pos ~  factor(AGEGRP) + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model2u, exponentiate = TRUE, details = TRUE)
+gof(model2u)
+
+model3u <- glmer(PmMSP1pos ~  factor(Wealthquintile) + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model3u, exponentiate = TRUE, details = TRUE)
+gof(model3u)
+
+model4u <- glmer(PmMSP1pos ~  Urban + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model4u, exponentiate = TRUE, details = TRUE)
+gof(model4u)
+
+model5u <- glmer(PmMSP1pos ~  netcover_ind + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model5u, exponentiate = TRUE, details = TRUE)
+gof(model5u)
+
+model6u <- glmer(PmMSP1pos ~  netcover_avg + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model6u, exponentiate = TRUE, details = TRUE)
+gof(model6u)
+
+#Final adjusted Pm seropositivity model
 model1 <- glmer(PmMSP1pos ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + netcover_avg + netcover_ind +
                   Urban + (1 | varunit),
                 data= NG_Ab_data, family= "binomial",
@@ -401,8 +438,44 @@ gof(model1)
 performance::check_collinearity(model1)
 performance::binned_residuals(model1) 
 
+#Unadjusted models for outcome= P. ovale MSP1 seropositivity
+model1ovale_u <- glmer(PoMSP1pos ~  Gender + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model1ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model1u)
 
-#Final Po. seropositivity model
+model2ovale_u <- glmer(PoMSP1pos ~  factor(AGEGRP) + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model2ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model2ovale_u)
+
+model3ovale_u <- glmer(PoMSP1pos ~  factor(Wealthquintile) + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model3ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model3ovale_u)
+
+model4ovale_u <- glmer(PoMSP1pos ~  Urban + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model4ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model4ovale_u)
+
+model5ovale_u <- glmer(PoMSP1pos ~  netcover_ind + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model5ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model5ovale_u)
+
+model6ovale_u <- glmer(PoMSP1pos ~  netcover_avg + (1 | varunit),
+                 data= NG_Ab_data, family= "binomial",
+                 control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model6ovale_u, exponentiate = TRUE, details = TRUE)
+gof(model6ovale_u)
+
+#Final adjusted Po. seropositivity model
 model2.2 <- glmer(PoMSP1pos ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + netcover_avg + netcover_ind +
                   Urban + (1 | varunit),
                 data= NG_Ab_data, family= "binomial",
@@ -412,8 +485,44 @@ model_performance(model2.2, metrics= "common")
 gof(model2.2)
 performance::binned_residuals(model2.2) 
 
+#Unadjusted models for outcome= P. vivax MSP1 seropositivity
+model1vivax_u <- glmer(PvMSP1pos ~  Gender + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model1vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model1u)
 
-#Final Pv seropositivity model
+model2vivax_u <- glmer(PvMSP1pos ~  factor(AGEGRP) + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model2vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model2vivax_u)
+
+model3vivax_u <- glmer(PvMSP1pos ~  factor(Wealthquintile) + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model3vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model3vivax_u)
+
+model4vivax_u <- glmer(PvMSP1pos ~  Urban + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model4vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model4vivax_u)
+
+model5vivax_u <- glmer(PvMSP1pos ~  netcover_ind + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model5vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model5vivax_u)
+
+model6vivax_u <- glmer(PvMSP1pos ~  netcover_avg + (1 | varunit),
+                       data= NG_Ab_data, family= "binomial",
+                       control=glmerControl(optimizer="bobyqa"))  
+parameters::parameters(model6vivax_u, exponentiate = TRUE, details = TRUE)
+gof(model6vivax_u)
+
+#Final adjusted Pv seropositivity model
 model3 <- glmer(PvMSP1pos ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + netcover_avg + netcover_ind +
                   Urban + (1 | varunit),
                 data= NG_Ab_data, family= "binomial",
@@ -423,16 +532,6 @@ model_performance(model3, metrics= "common")
 gof(model3)
 performance::check_collinearity(model3)
 performance::binned_residuals(model3) 
-
-#Final Pf seropositivity model
-model4 <- glmer(PfMSP1pos ~ factor(AGEGRP) + Gender + factor(Wealthquintile) + netcover_avg + netcover_ind +
-                  Urban + (1 | varunit/ A1QNUMBER),
-                data= NG_Ab_data, family= "binomial",
-                control=glmerControl(optimizer="bobyqa"))
-parameters(model4, exponentiate = TRUE, details = TRUE)
-model_performance(model4, metrics= "common") 
-gof(model4)
-performance::check_collinearity(model4)
 
 
 
